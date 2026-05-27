@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eid Mubarak and Exam Survival</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#020b18;min-height:100vh;font-family:"Share Tech Mono",monospace;overflow-x:hidden;padding:20px 0 80px;}
+.page{display:flex;flex-direction:column;align-items:center;gap:24px;position:relative;z-index:10;}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite alternate;}
+@keyframes twinkle{from{opacity:.1;transform:scale(.8);}to{opacity:1;transform:scale(1.2);}}
+.moon{position:fixed;top:30px;right:60px;width:80px;height:80px;z-index:1;animation:mf 6s ease-in-out infinite;filter:drop-shadow(0 0 18px #ffd700aa);}
+@keyframes mf{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.mo{width:80px;height:80px;border-radius:50%;background:#ffd700;position:relative;box-shadow:0 0 40px #ffd700,0 0 80px #ffd70066;}
+.mc{position:absolute;top:5px;left:16px;width:70px;height:70px;border-radius:50%;background:#020b18;}
+.geo{position:fixed;inset:0;opacity:.04;z-index:0;background-image:repeating-linear-gradient(45deg,#ffd700 0,#ffd700 1px,transparent 0,transparent 50%),repeating-linear-gradient(-45deg,#ffd700 0,#ffd700 1px,transparent 0,transparent 50%);background-size:40px 40px;}
+canvas{position:fixed;inset:0;opacity:.07;z-index:0;pointer-events:none;}
+.lants{position:fixed;top:0;left:0;right:0;pointer-events:none;z-index:1;display:flex;justify-content:space-around;}
+.lant{font-size:1.8rem;animation:sw var(--sd) ease-in-out infinite alternate;transform-origin:top center;margin-top:-4px;}
+@keyframes sw{from{transform:rotate(-12deg);}to{transform:rotate(12deg);}}
+.term{width:min(700px,95vw);background:rgba(2,11,24,.93);border:1px solid #00ff8855;border-radius:12px;box-shadow:0 0 60px #00ff8822;overflow:hidden;}
+.eterm{border-color:#ff6b6b55;box-shadow:0 0 60px #ff6b6b22;}
+.tbar{padding:11px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #00ff8833;background:rgba(0,255,136,.06);}
+.eterm .tbar{border-bottom-color:#ff6b6b33;background:rgba(255,107,107,.06);}
+.dot{width:11px;height:11px;border-radius:50%;}
+.dr{background:#ff5f57;box-shadow:0 0 5px #ff5f57;}
+.dy{background:#febc2e;box-shadow:0 0 5px #febc2e;}
+.dg{background:#28c840;box-shadow:0 0 5px #28c840;}
+.tt{margin-left:8px;color:#00ff8899;font-size:12px;letter-spacing:2px;}
+.tb{padding:24px 28px 28px;}
+.ln{display:flex;gap:6px;margin-bottom:9px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;font-size:clamp(12px,2.2vw,14px);line-height:1.65;flex-wrap:wrap;}
+.ln.v{opacity:1;transform:translateY(0);}
+.p{color:#00ff88;white-space:nowrap;}
+.ep{color:#ff6b6b;white-space:nowrap;}
+.cm{color:#fff;}
+.ot{color:#7ee8a2;}
+.er{color:#ff6b6b;}
+.sc{color:#ffd700;font-weight:bold;}
+.in{color:#64b5f6;}
+.wn{color:#ffab40;}
+.ar{color:#ffd700;font-size:clamp(18px,4vw,24px);letter-spacing:3px;font-family:"Cinzel",serif;text-shadow:0 0 20px #ffd700aa;direction:rtl;display:block;width:100%;text-align:center;margin:6px 0;}
+.bw{color:#ffd700;font-size:clamp(18px,4.5vw,30px);letter-spacing:3px;font-family:"Cinzel",serif;animation:pu 2s ease-in-out infinite;display:block;width:100%;text-align:center;margin:10px 0;}
+.br{color:#ff6b6b;font-size:clamp(16px,3.5vw,22px);letter-spacing:3px;font-family:"Cinzel",serif;display:block;width:100%;text-align:center;margin:8px 0;animation:rp 1.5s ease-in-out infinite;}
+.ns{color:#ffd700;font-size:clamp(14px,3vw,18px);letter-spacing:4px;font-family:"Cinzel",serif;display:block;width:100%;text-align:right;margin:10px 0;text-shadow:0 0 20px #ffd700aa;}
+@keyframes pu{0%,100%{text-shadow:0 0 20px #ffd700,0 0 40px #ffd70066;}50%{text-shadow:0 0 40px #ffd700,0 0 80px #ffd700aa;}}
+@keyframes rp{0%,100%{text-shadow:0 0 15px #ff6b6b,0 0 30px #ff6b6b66;}50%{text-shadow:0 0 30px #ff6b6b,0 0 60px #ff6b6baa;}}
+.cu{display:inline-block;width:8px;height:15px;background:#00ff88;animation:bl 1s step-end infinite;vertical-align:middle;margin-left:2px;border-radius:1px;}
+.cu.red{background:#ff6b6b;}
+@keyframes bl{50%{opacity:0;}}
+.dv{border:none;border-top:1px solid #00ff8822;margin:16px 0;}
+.dvr{border:none;border-top:1px solid #ff6b6b22;margin:16px 0;}
+.sc2{border-radius:10px;border:1px solid var(--cc);background:linear-gradient(135deg,rgba(var(--cr),.08),rgba(2,11,24,.6));padding:12px 16px;margin-bottom:10px;box-shadow:0 0 18px rgba(var(--cr),.12);opacity:0;transform:translateY(10px) scale(.98);transition:opacity .4s,transform .4s;position:relative;overflow:hidden;}
+.sc2::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cc),transparent);}
+.sc2.v{opacity:1;transform:translateY(0) scale(1);}
+.ct{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:4px;}
+.cn{color:#fff;font-size:clamp(12px,2.2vw,14px);font-weight:bold;letter-spacing:1px;}
+.cb{background:rgba(var(--cr),.2);border:1px solid var(--cc);color:var(--cc);font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.cst{color:#ccc;font-size:clamp(11px,1.9vw,12px);line-height:1.5;}
+.cd{margin-top:6px;font-size:10px;color:rgba(var(--cr),.9);}
+.pw{margin:14px 0 4px;}
+.pl{color:#aaa;font-size:12px;margin-bottom:6px;}
+.pb{height:10px;background:#ffffff11;border-radius:4px;overflow:hidden;}
+.pf{height:100%;width:0;border-radius:4px;background:linear-gradient(90deg,#ff6b6b,#ffab40);box-shadow:0 0 10px #ff6b6b88;transition:width 1.2s ease;}
+.cdb{border:1px solid #ff6b6b44;border-radius:8px;padding:14px 18px;text-align:center;background:rgba(255,107,107,.04);}
+.cdl{color:#ff6b6b99;font-size:11px;letter-spacing:2px;margin-bottom:6px;}
+.cdn{color:#ff6b6b;font-size:clamp(28px,8vw,48px);font-weight:bold;text-shadow:0 0 30px #ff6b6b;}
+.cds{color:#ffab40;font-size:11px;margin-top:4px;}
+.rb{margin-top:18px;padding:9px 22px;background:transparent;border:1px solid #00ff8866;color:#00ff88;font-family:"Share Tech Mono",monospace;font-size:12px;letter-spacing:2px;cursor:pointer;border-radius:4px;transition:all .2s;display:none;}
+.rb:hover{background:#00ff8811;border-color:#00ff88;}
+.fw{position:fixed;pointer-events:none;z-index:20;}
+.sp{position:absolute;width:5px;height:5px;border-radius:50%;animation:sf var(--t) ease-out forwards;}
+@keyframes sf{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0;}}
+</style>
+</head>
+<body>
+<canvas id="mx"></canvas>
+<div class="stars" id="stars"></div>
+<div class="geo"></div>
+<div class="moon"><div class="mo"><div class="mc"></div></div></div>
+<div class="lants">
+  <span class="lant" style="--sd:3.1s">&#127982;</span>
+  <span class="lant" style="--sd:2.7s">&#127982;</span>
+  <span class="lant" style="--sd:3.5s">&#127982;</span>
+  <span class="lant" style="--sd:2.9s">&#127982;</span>
+  <span class="lant" style="--sd:3.3s">&#127982;</span>
+</div>
+<div class="page">
+  <div class="term" id="et" style="margin-top:70px">
+    <div class="tbar">
+      <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+      <span class="tt">eid_mubarak.sh</span>
+    </div>
+    <div class="tb" id="eb">
+      <button class="rb" id="rb" onclick="restart()">Run Again</button>
+    </div>
+  </div>
+  <div class="term eterm" id="xt" style="opacity:0;transition:opacity .8s">
+    <div class="tbar">
+      <div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div>
+      <span class="tt" style="color:#ff6b6b99">exam_survival.sh -- CRITICAL</span>
+    </div>
+    <div class="tb" id="xb">
+      <div class="cdb" id="cdb" style="opacity:0;transition:opacity .6s;margin-bottom:18px">
+        <div class="cdl">WARNING: FIRST PAPER IN</div>
+        <div class="cdn">6</div>
+        <div class="cds">DAYS | Digital Logic Design | 02 Jun 2026</div>
+      </div>
+      <div id="sw"></div>
+      <div class="pw" id="pw" style="opacity:0;transition:opacity .6s">
+        <div class="pl">OVERALL EXAM READINESS:</div>
+        <div class="pb"><div class="pf" id="pf"></div></div>
+      </div>
+      <div id="xl"></div>
+    </div>
+  </div>
+</div>
+<script>
+var mx=document.getElementById("mx");
+var ctx=mx.getContext("2d");
+mx.width=window.innerWidth;mx.height=window.innerHeight;
+var cols=Math.floor(mx.width/20),drops=[];
+for(var i=0;i<cols;i++)drops[i]=1;
+function dm(){
+  ctx.fillStyle="rgba(2,11,24,0.05)";ctx.fillRect(0,0,mx.width,mx.height);
+  ctx.fillStyle="#00ff88";ctx.font="14px monospace";
+  var ch="EIDMUBARAK01FAAH";
+  for(var i=0;i<drops.length;i++){
+    ctx.fillText(ch[Math.floor(Math.random()*ch.length)],i*20,drops[i]*20);
+    if(drops[i]*20>mx.height&&Math.random()>.975)drops[i]=0;
+    drops[i]++;
+  }
+}
+setInterval(dm,50);
+var se=document.getElementById("stars");
+for(var i=0;i<120;i++){
+  var s=document.createElement("div");s.className="star";
+  var sz=Math.random()*2.5+.5;
+  s.style.cssText="width:"+sz+"px;height:"+sz+"px;top:"+Math.random()*100+"%;left:"+Math.random()*100+"%;--d:"+(Math.random()*3+1.5).toFixed(1)+"s;animation-delay:"+(Math.random()*3).toFixed(1)+"s;";
+  se.appendChild(s);
+}
+function as(){window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});}
+var ES=[
+  {d:300, t:"cmd",pr:"~/eid $",tx:"ssh friend@heart.local"},
+  {d:900, t:"ot", tx:"Connecting to friend@heart.local..."},
+  {d:1500,t:"in", tx:"Connected! Welcome bhai!"},
+  {d:2100,t:"cmd",pr:"~/eid $",tx:"cat greeting.txt"},
+  {d:2800,t:"ar", tx:"&#1593;&#1616;&#1610;&#1583;&#1612; &#1605;&#1615;&#1576;&#1575;&#1585;&#1614;&#1603;&#1612;"},
+  {d:3300,t:"bw", tx:"EID MUBARAK &#127769;"},
+  {d:4000,t:"dv"},
+  {d:4200,t:"ot", tx:"Wishing you joy, peace and endless eidi"},
+  {d:4900,t:"cmd",pr:"~/eid $",tx:"run diagnostics --check happiness"},
+  {d:5700,t:"er", tx:"ERROR 404: Sadness not found"},
+  {d:6200,t:"sc", tx:"SUCCESS: Khushi levels MAXIMUM"},
+  {d:6700,t:"sc", tx:"SUCCESS: Biryani queue READY TO SERVE"},
+  {d:7200,t:"sc", tx:"SUCCESS: Eidi buffer OVERFLOWING"},
+  {d:7800,t:"dv"},
+  {d:8000,t:"cmd",pr:"~/eid $",tx:"git log --oneline"},
+  {d:8700,t:"in", tx:"a1b2c3d feat: added barkat to your rizq"},
+  {d:9100,t:"in", tx:"9f8e7d6 fix: removed all sadness and bugs"},
+  {d:9500,t:"in", tx:"5c4b3a2 chore: merged family and love branches"},
+  {d:9900,t:"in", tx:"1a2b3c4 deploy: happiness pushed to production"},
+  {d:10400,t:"dv"},
+  {d:10600,t:"cmd",pr:"~/eid $",tx:"echo Eid Mubarak Bhai!"},
+  {d:11300,t:"bw", tx:"With love from a fellow dev"},
+  {d:11800,t:"cu"}
+];
+var SB=[
+  {nm:"SE-151 - Digital Logic Design",  dt:"02 Jun",st:"Brain.exe not found. 6 din mein miracle chahiye!",   bg:"CRITICAL",cc:"#ff4444",cr:"255,68,68",   dy:"6 days remaining"},
+  {nm:"GE-207 - Civics and Community",  dt:"08 Jun",st:"Naam suna tha bhai... WhatsApp forward mein shayad", bg:"FAAH",    cc:"#ff8c42",cr:"255,140,66",  dy:"12 days remaining"},
+  {nm:"MATH-314 - Linear Algebra",      dt:"11 Jun",st:"Matrix? Woh Christopher Nolan ki movie thi na?",     bg:"FAAH",    cc:"#ffab40",cr:"255,171,64",  dy:"15 days remaining"},
+  {nm:"SE-103 - Object Oriented Prog.", dt:"15 Jun",st:"Class attend ki thi... ek baar. Front row mein soye",bg:"MAYBE",   cc:"#ffd700",cr:"255,215,0",   dy:"19 days remaining"},
+  {nm:"SE-204 - Database Systems",      dt:"18 Jun",st:"SELECT * FROM brain WHERE knowledge IS NOT NULL = 0 rows",bg:"MAYBE",cc:"#64b5f6",cr:"100,181,246",dy:"22 days remaining"},
+  {nm:"GE-202 - Ideology & Constitution",dt:"23 Jun",st:"Last paper. Sabse aasan. InshAllah ho jayega!",    bg:"INSHALLAH",cc:"#00ff88",cr:"0,255,136",   dy:"27 days remaining"}
+];
+var XL=[
+  {d:0,   t:"dvr"},
+  {d:200, t:"wn",tx:"RUNNING EXAM READINESS SCAN..."},
+  {d:900, t:"dvr"},
+  {d:1100,t:"er",tx:"CRITICAL: Digital Logic Design in 6 DAYS"},
+  {d:1700,t:"wn",tx:"Syllabus pages: 847  |  Pages read: 3"},
+  {d:2300,t:"er",tx:"Knowledge.exe status: NOT RESPONDING"},
+  {d:2900,t:"dvr"},
+  {d:3100,t:"br",tx:"OVERALL STATUS: FAAH"},
+  {d:3700,t:"dvr"},
+  {d:3900,t:"in",tx:"SURVIVAL STRATEGY v1.0:"},
+  {d:4400,t:"wn",tx:"  Step 1: Raat 12 baje chai banao"},
+  {d:4900,t:"wn",tx:"  Step 2: PYQs dekho last 5 saal"},
+  {d:5400,t:"wn",tx:"  Step 3: Handouts highlight karo"},
+  {d:5900,t:"wn",tx:"  Step 4: Important topic ratta lagao"},
+  {d:6400,t:"wn",tx:"  Step 5: Bismillah kar ke hall mein jao"},
+  {d:7000,t:"dvr"},
+  {d:7200,t:"sc",tx:"Tawakkul level    -> 100%"},
+  {d:7700,t:"sc",tx:"InshAllah power   -> UNLIMITED"},
+  {d:8200,t:"sc",tx:"Dua buffer        -> ACTIVE"},
+  {d:8700,t:"dvr"},
+  {d:8900,t:"wn",tx:"Eid bhi enjoy karo... exams baad mein!"},
+  {d:9500,t:"nm"},
+  {d:10000,t:"cr"}
+];
+var AT=[];
+function aln(con,item){
+  if(item.t==="dv"){var h=document.createElement("hr");h.className="dv";con.appendChild(h);as();return;}
+  if(item.t==="dvr"){var h=document.createElement("hr");h.className="dvr";con.appendChild(h);as();return;}
+  if(item.t==="nm"){var l=document.createElement("div");l.className="ln v";l.innerHTML="<span class='ns'>-- Hamza Muhammadi</span>";con.appendChild(l);as();return;}
+  if(item.t==="cu"){
+    var l=document.createElement("div");l.className="ln v";
+    l.innerHTML="<span class='p'>~/eid $</span> <span class='cu'></span>";
+    con.appendChild(l);
+    document.getElementById("rb").style.display="inline-block";
+    as();fw();
+    setTimeout(function(){
+      document.getElementById("xt").style.opacity="1";
+      document.getElementById("cdb").style.opacity="1";
+      as();rxs();
+    },800);
+    return;
+  }
+  if(item.t==="cr"){
+    var l=document.createElement("div");l.className="ln v";
+    l.innerHTML="<span class='ep'>~/exam $</span> <span class='cu red'></span>";
+    con.appendChild(l);as();return;
+  }
+  var l=document.createElement("div");l.className="ln";
+  var mp={
+    "cmd":"<span class='p'>"+item.pr+"</span><span class='cm'> "+item.tx+"</span>",
+    "ar" :"<span class='ar'>"+item.tx+"</span>",
+    "bw" :"<span class='bw'>"+item.tx+"</span>",
+    "br" :"<span class='br'>"+item.tx+"</span>",
+    "ot" :"<span class='ot'>"+item.tx+"</span>",
+    "er" :"<span class='er'>"+item.tx+"</span>",
+    "sc" :"<span class='sc'>"+item.tx+"</span>",
+    "in" :"<span class='in'>"+item.tx+"</span>",
+    "wn" :"<span class='wn'>"+item.tx+"</span>"
+  };
+  l.innerHTML=mp[item.t]||"<span class='ot'>"+item.tx+"</span>";
+  con.appendChild(l);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){l.classList.add("v");});});
+  as();
+}
+function rxs(){
+  var sw=document.getElementById("sw");
+  var xl=document.getElementById("xl");
+  for(var i=0;i<SB.length;i++){
+    (function(s,idx){
+      var tt=setTimeout(function(){
+        var c=document.createElement("div");c.className="sc2";
+        c.style.cssText="--cc:"+s.cc+";--cr:"+s.cr+";";
+        c.innerHTML="<div class='ct'><div class='cn'>"+s.nm+"</div><div class='cb'>"+s.dt+" | "+s.bg+"</div></div><div class='cst'>"+s.st+"</div><div class='cd'>"+s.dy+"</div>";
+        sw.appendChild(c);
+        requestAnimationFrame(function(){requestAnimationFrame(function(){c.classList.add("v");});});
+        as();
+      },idx*500+200);
+      AT.push(tt);
+    })(SB[i],i);
+  }
+  var bt=setTimeout(function(){
+    document.getElementById("pw").style.opacity="1";
+    setTimeout(function(){document.getElementById("pf").style.width="4%";},200);
+    as();
+  },SB.length*500+700);
+  AT.push(bt);
+  var base=SB.length*500+1500;
+  for(var i=0;i<XL.length;i++){
+    (function(item,b){
+      var tt=setTimeout(function(){aln(xl,item);},b+item.d);
+      AT.push(tt);
+    })(XL[i],base);
+  }
+}
+function restart(){
+  for(var i=0;i<AT.length;i++)clearTimeout(AT[i]);AT=[];
+  var b=document.getElementById("eb");
+  b.innerHTML="<button class='rb' id='rb' onclick='restart()'>Run Again</button>";
+  document.getElementById("rb").style.display="none";
+  document.getElementById("xt").style.opacity="0";
+  document.getElementById("sw").innerHTML="";
+  document.getElementById("xl").innerHTML="";
+  document.getElementById("pw").style.opacity="0";
+  document.getElementById("pf").style.width="0";
+  document.getElementById("cdb").style.opacity="0";
+  window.scrollTo({top:0,behavior:"smooth"});
+  res();
+}
+function res(){
+  var b=document.getElementById("eb");
+  for(var i=0;i<ES.length;i++){
+    (function(item){
+      var tt=setTimeout(function(){aln(b,item);},item.d);
+      AT.push(tt);
+    })(ES[i]);
+  }
+}
+function fw(){
+  var cl=["#ffd700","#00ff88","#ff6b9d","#64b5f6","#ff8c42"];
+  for(var f=0;f<5;f++){
+    (function(fi){
+      setTimeout(function(){
+        var w=document.createElement("div");w.className="fw";
+        w.style.left=Math.random()*window.innerWidth+"px";
+        w.style.top=(Math.random()*window.innerHeight*.5+60)+"px";
+        document.body.appendChild(w);
+        for(var s=0;s<16;s++){
+          var sp=document.createElement("div");sp.className="sp";
+          var r=(s/16)*Math.PI*2,dist=50+Math.random()*60;
+          sp.style.cssText="background:"+cl[Math.floor(Math.random()*cl.length)]+";--tx:"+Math.cos(r)*dist+"px;--ty:"+Math.sin(r)*dist+"px;--t:"+((.6+Math.random()*.6).toFixed(2))+"s;";
+          w.appendChild(sp);
+        }
+        setTimeout(function(){w.remove();},1400);
+      },fi*300);
+    })(f);
+  }
+}
+res();
+</script>
+</body>
+</html>
