@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eid Mubarak 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #020b18;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Stars */
+  .stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: twinkle var(--d) ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.1; transform: scale(0.8); }
+    to   { opacity: 1;   transform: scale(1.2); }
+  }
+
+  /* Crescent moon */
+  .moon {
+    position: fixed;
+    top: 40px;
+    right: 80px;
+    width: 90px;
+    height: 90px;
+    z-index: 1;
+    animation: moonFloat 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 20px #ffd700aa);
+  }
+  @keyframes moonFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-14px); }
+  }
+  .moon-outer {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: #ffd700;
+    position: relative;
+    box-shadow: 0 0 40px #ffd700, 0 0 80px #ffd70066;
+  }
+  .moon-cut {
+    position: absolute;
+    top: 6px; left: 18px;
+    width: 78px; height: 78px;
+    border-radius: 50%;
+    background: #020b18;
+  }
+
+  /* Geometric Islamic pattern background */
+  .geo-bg {
+    position: fixed;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(45deg, #ffd700 0, #ffd700 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, #ffd700 0, #ffd700 1px, transparent 0, transparent 50%);
+    background-size: 40px 40px;
+    z-index: 0;
+  }
+
+  /* Matrix rain */
+  canvas#matrix {
+    position: fixed;
+    inset: 0;
+    opacity: 0.08;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Terminal window */
+  .terminal {
+    position: relative;
+    z-index: 10;
+    width: min(680px, 95vw);
+    background: rgba(2, 11, 24, 0.92);
+    border: 1px solid #00ff8855;
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 1px #00ff8822,
+      0 0 60px #00ff8822,
+      inset 0 0 40px rgba(0,255,136,0.03);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+
+  /* Title bar */
+  .titlebar {
+    background: rgba(0,255,136,0.07);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #00ff8833;
+  }
+  .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .dot.red   { background: #ff5f57; box-shadow: 0 0 6px #ff5f57; }
+  .dot.yellow{ background: #febc2e; box-shadow: 0 0 6px #febc2e; }
+  .dot.green { background: #28c840; box-shadow: 0 0 6px #28c840; }
+  .titlebar-text {
+    margin-left: 8px;
+    color: #00ff8899;
+    font-size: 13px;
+    letter-spacing: 2px;
+  }
+
+  /* Terminal body */
+  .terminal-body {
+    padding: 28px 32px 32px;
+  }
+
+  .line {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.3s, transform 0.3s;
+    font-size: clamp(13px, 2.5vw, 15px);
+    line-height: 1.6;
+    flex-wrap: wrap;
+  }
+  .line.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .prompt { color: #00ff88; white-space: nowrap; }
+  .cmd    { color: #ffffff; }
+  .output { color: #7ee8a2; padding-left: 0; word-break: break-word; }
+  .error  { color: #ff6b6b; }
+  .success{ color: #ffd700; font-weight: bold; }
+  .info   { color: #64b5f6; }
+  .arabic { 
+    color: #ffd700; 
+    font-size: clamp(18px, 4vw, 26px); 
+    letter-spacing: 3px;
+    font-family: 'Cinzel', serif;
+    text-shadow: 0 0 20px #ffd700aa;
+    direction: rtl;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 8px 0;
+  }
+  .big-wish {
+    color: #ffd700;
+    font-size: clamp(20px, 5vw, 32px);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px #ffd700, 0 0 60px #ffd70066;
+    font-family: 'Cinzel', serif;
+    animation: pulse 2s ease-in-out infinite;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 12px 0;
+  }
+  @keyframes pulse {
+    0%,100% { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffd70066; }
+    50%      { text-shadow: 0 0 40px #ffd700, 0 0 80px #ffd700aa, 0 0 120px #ffd70044; }
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 9px; height: 16px;
+    background: #00ff88;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+    border-radius: 1px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #00ff8822;
+    margin: 18px 0;
+  }
+
+  /* Fireworks */
+  .firework {
+    position: fixed;
+    pointer-events: none;
+    z-index: 20;
+  }
+  .spark {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    animation: spark-fly var(--t) ease-out forwards;
+  }
+  @keyframes spark-fly {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
+  /* Lantern */
+  .lanterns {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+  }
+  .lantern {
+    font-size: 2rem;
+    animation: swing var(--sd) ease-in-out infinite alternate;
+    transform-origin: top center;
+    margin-top: -5px;
+  }
+  @keyframes swing {
+    from { transform: rotate(-12deg); }
+    to   { transform: rotate(12deg); }
+  }
+
+  /* Restart button */
+  .restart-btn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid #00ff8866;
+    color: #00ff88;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: none;
+  }
+  .restart-btn:hover {
+    background: #00ff8811;
+    border-color: #00ff88;
+    box-shadow: 0 0 20px #00ff8844;
+  }
+</style>
+</head>
+<body>
+
+<!-- Canvas for matrix rain -->
+<canvas id="matrix"></canvas>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- Geometric bg -->
+<div class="geo-bg"></div>
+
+<!-- Moon -->
+<div class="moon">
+  <div class="moon-outer"><div class="moon-cut"></div></div>
+</div>
+
+<!-- Lanterns -->
+<div class="lanterns">
+  <span class="lantern" style="--sd:3.1s">🏮</span>
+  <span class="lantern" style="--sd:2.7s">🏮</span>
+  <span class="lantern" style="--sd:3.5s">🏮</span>
+  <span class="lantern" style="--sd:2.9s">🏮</span>
+  <span class="lantern" style="--sd:3.3s">🏮</span>
+</div>
+
+<!-- Terminal -->
+<div class="terminal">
+  <div class="titlebar">
+    <div class="dot red"></div>
+    <div class="dot yellow"></div>
+    <div class="dot green"></div>
+    <span class="titlebar-text">eid_mubarak.sh — bash</span>
+  </div>
+  <div class="terminal-body" id="terminal-body">
+    <!-- Lines injected by JS -->
+    <button class="restart-btn" id="restart-btn" onclick="restart()">↺ Run Again</button>
+  </div>
+</div>
+
+<script>
+// ── Matrix Rain ──
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+canvas.width  = window.innerWidth;
+canvas.height = window.innerHeight;
+const cols = Math.floor(canvas.width / 20);
+const drops = Array(cols).fill(1);
+const chars = 'عيدمباركEIDMUBARAK01ﷲ☾✦';
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(2,11,24,0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#00ff88';
+  ctx.font = '14px Share Tech Mono';
+  drops.forEach((y, i) => {
+    const ch = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(ch, i * 20, y * 20);
+    if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  });
+}
+setInterval(drawMatrix, 50);
+
+// ── Stars ──
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 120; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2.5 + 0.5;
+  s.style.cssText = `
+    width:${sz}px; height:${sz}px;
+    top:${Math.random()*100}%;
+    left:${Math.random()*100}%;
+    --d:${(Math.random()*3+1.5).toFixed(1)}s;
+    animation-delay:${(Math.random()*3).toFixed(1)}s;
+  `;
+  starsEl.appendChild(s);
+}
+
+// ── Terminal Script ──
+const script = [
+  { delay: 300,  type: 'cmd',     prompt: '~/eid $', text: 'ssh friend@heart.local' },
+  { delay: 800,  type: 'output',  text: 'Connecting to friend@heart.local...' },
+  { delay: 1400, type: 'info',    text: '✓ Connection established. Welcome!' },
+  { delay: 2000, type: 'cmd',     prompt: '~/eid $', text: 'cat greeting.txt' },
+  { delay: 2700, type: 'arabic',  text: 'عِيدٌ مُبَارَكٌ' },
+  { delay: 3200, type: 'big',     text: 'EID MUBARAK 🌙' },
+  { delay: 3900, type: 'divider' },
+  { delay: 4100, type: 'output',  text: 'Wishing you and your family joy, peace & blessings.' },
+  { delay: 4800, type: 'cmd',     prompt: '~/eid $', text: 'run diagnostics --check happiness' },
+  { delay: 5500, type: 'error',   text: '✗ ERROR 404: Sadness not found' },
+  { delay: 6000, type: 'success', text: '✓ SUCCESS: Khushi levels → MAXIMUM 🚀' },
+  { delay: 6500, type: 'success', text: '✓ SUCCESS: Eidi buffer → OVERFLOWING 💰' },
+  { delay: 7000, type: 'success', text: '✓ SUCCESS: Biryani queue → READY TO SERVE 🍛' },
+  { delay: 7600, type: 'divider' },
+  { delay: 7800, type: 'cmd',     prompt: '~/eid $', text: 'git log --oneline' },
+  { delay: 8500, type: 'info',    text: 'a1b2c3d  feat: added barkat to your rizq' },
+  { delay: 8900, type: 'info',    text: '9f8e7d6  fix: removed all your bugs & sadness' },
+  { delay: 9300, type: 'info',    text: '5c4b3a2  chore: merged family & love branches' },
+  { delay: 9700, type: 'info',    text: '1a2b3c4  deploy: happiness pushed to production ✅' },
+  { delay: 10300,type: 'divider' },
+  { delay: 10500,type: 'cmd',     prompt: '~/eid $', text: 'echo "Eid Mubarak Bhai! 🤝"' },
+  { delay: 11200,type: 'big',     text: '— From a fellow developer 💻' },
+  { delay: 11900,type: 'cursor' },
+];
+
+let timeouts = [];
+
+function restart() {
+  timeouts.forEach(clearTimeout);
+  timeouts = [];
+  const body = document.getElementById('terminal-body');
+  body.innerHTML = '<button class="restart-btn" id="restart-btn" onclick="restart()">↺ Run Again</button>';
+  document.getElementById('restart-btn').style.display = 'none';
+  runScript();
+}
+
+function runScript() {
+  const body = document.getElementById('terminal-body');
+  const btn  = document.getElementById('restart-btn');
+
+  script.forEach((item, idx) => {
+    const t = setTimeout(() => {
+      if (item.type === 'divider') {
+        const hr = document.createElement('hr');
+        hr.className = 'divider';
+        body.insertBefore(hr, btn);
+        return;
+      }
+      if (item.type === 'cursor') {
+        const line = document.createElement('div');
+        line.className = 'line visible';
+        line.innerHTML = `<span class="prompt">~/eid $</span> <span class="cursor"></span>`;
+        body.insertBefore(line, btn);
+        btn.style.display = 'inline-block';
+        fireFireworks();
+        return;
+      }
+
+      const line = document.createElement('div');
+      line.className = 'line';
+
+      if (item.type === 'cmd') {
+        line.innerHTML = `<span class="prompt">${item.prompt}</span><span class="cmd"> ${item.text}</span>`;
+      } else if (item.type === 'arabic') {
+        line.innerHTML = `<span class="arabic">${item.text}</span>`;
+      } else if (item.type === 'big') {
+        line.innerHTML = `<span class="big-wish">${item.text}</span>`;
+      } else if (item.type === 'output') {
+        line.innerHTML = `<span class="output">${item.text}</span>`;
+      } else if (item.type === 'error') {
+        line.innerHTML = `<span class="error">${item.text}</span>`;
+      } else if (item.type === 'success') {
+        line.innerHTML = `<span class="success">${item.text}</span>`;
+      } else if (item.type === 'info') {
+        line.innerHTML = `<span class="info">${item.text}</span>`;
+      }
+
+      body.insertBefore(line, btn);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => line.classList.add('visible'));
+      });
+      body.scrollTop = body.scrollHeight;
+    }, item.delay);
+    timeouts.push(t);
+  });
+}
+
+// ── Fireworks ──
+function fireFireworks() {
+  const colors = ['#ffd700','#00ff88','#ff6b9d','#64b5f6','#ff8c42'];
+  for (let f = 0; f < 5; f++) {
+    setTimeout(() => {
+      const fw = document.createElement('div');
+      fw.className = 'firework';
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight * 0.6 + 60;
+      fw.style.left = x + 'px';
+      fw.style.top  = y + 'px';
+      document.body.appendChild(fw);
+      for (let s = 0; s < 18; s++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        const angle = (s / 18) * 360;
+        const dist  = 60 + Math.random() * 60;
+        const rad   = angle * Math.PI / 180;
+        spark.style.cssText = `
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          --tx:${Math.cos(rad)*dist}px;
+          --ty:${Math.sin(rad)*dist}px;
+          --t:${(0.6 + Math.random()*0.6).toFixed(2)}s;
+          box-shadow:0 0 6px currentColor;
+        `;
+        fw.appendChild(spark);
+      }
+      setTimeout(() => fw.remove(), 1400);
+    }, f * 350);
+  }
+}
+
+// ── Start ──
+runScript();
+</script>
+</body>
+</html>
+
